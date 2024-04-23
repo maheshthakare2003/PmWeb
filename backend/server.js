@@ -5,9 +5,13 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 dotenv.config()
-mongoose.connect("mongodb+srv://maheshthakare149:Bnhndpxh2INXRYaT@cluster0.h7ql9jg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", () => {
-    console.log('connect');
-}, (e) => console.log(e))
+mongoose.connect(
+  "mongodb+srv://maheshthakare149:VPiiWyKFLibeQTFB@cluster0.ebvaxq8.mongodb.net/",
+  () => {
+    console.log("connect");
+  },
+  (e) => console.log(e)
+);
 
 
 const PORT = process.env.SERVER_PORT || 9000
