@@ -32,9 +32,10 @@ const handleLogin = async () => {
         email,
         password
       });
-      console.log('Logged in successfully:', response.data);
+      console.log('Logged in successfully:', response.data._id);
       // Redirect to dashboard after successful login
-      navigate('/Dash'); // Change to '/Dashboard'
+      const {_id}=response.data;
+      navigate(`/Dash/${_id}`); // Change to '/Dashboard'
     } catch (error) {
       console.error('Login error:', error.response.data.message);
       setError(error.response.data.message);

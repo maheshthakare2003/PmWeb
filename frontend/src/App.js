@@ -13,8 +13,8 @@ function App() {
    
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/:projectId" element={<Task />} />
-        <Route path="/Dash" element={<AppLayout2 />} />
+        <Route path="/Dash/:id/:projectId" element={<Task />} />
+        <Route path="/Dash/:id" element={<AppLayout2 />} />
        
       </Routes>
       

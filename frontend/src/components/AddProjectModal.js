@@ -17,7 +17,7 @@ const AddProjectModal = ({
   useEffect(() => {
     if (edit && isModalOpen) {
       axios
-        .get(`http://localhost:9000/project/${id}`)
+        .get(`http://localhost:5000/project/getProject/${id}`)
         .then((res) => {
           setTitle(res.data[0].title);
           setDesc(res.data[0].description);
