@@ -143,7 +143,7 @@ for (const key in data) {
                 })),
             },
             [uuid()]: {
-              name: "To do",
+              name: "To Do",
               items: res.data.data.tasks
                 .filter((task) => task.status === "To Do")
                 .map((task) => ({
@@ -181,7 +181,7 @@ for (const key in data) {
   const updateTodo = (status, taskId) => {
     axios
       .patch(`http://localhost:5000/task/updateTaskStatus/${taskId}`, {status})
-      .then((res) => {console.log("Response Data ", res.data)})
+      .then((res) => {})
       
       .catch((error) => {
         toast.error("Something went wrong");

@@ -19,16 +19,16 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
 
     useEffect(() => {
         if (isOpen) {
-            axios.get(`http://localhost:9000/project/${id.projectId}/task/${id.id}`)
-                .then((data) => {
-                    setTaskData({ ...data.data[0].task[0] });
-                    // console.log(taskData);
+            console.log({id});
+            axios.get(`http://localhost:5000/task/getTask/${id.id}`)
+                .then((response) => {
+                    setTaskData(response.data.data.task); // Update taskData with the received task object
                 })
                 .catch((error) => {
-                    toast.error('something went wrong')
-                })
+                    toast.error('Something went wrong');
+                });
         }
-    }, [isOpen]);
+    }, [isOpen, id]);
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
@@ -69,7 +69,11 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
                                 <div className='flex gap-4 h-[inherit]'>
                                     <div className="!w-8/12 px-8 space-y-3 py-4 min-h-max  overflow-y-auto">
                                         <h1 className='text-3xl font-semibold '>{capitalizeFirstLetter(taskData.title)}</h1>
-                                        <p className='text-gray-600'>{capitalizeFirstLetter(taskData.description)}</p>
+                                        
+                                        <p className='text-gray-600'>
+    {taskData.description !== null ? capitalizeFirstLetter(taskData.description) : "null"}
+</p>
+
                                         {/* <p className='text-gray-600'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores modi error, voluptatibus ullam odio nemo culpa optio incidunt, soluta sunt eos laboriosam labore animi dolorum voluptas officiis fugit perspiciatis laborum.</p> */}
                                         {/* <div>
                                             <h3 className='text-base text-gray-600 font-medium mt-3 mb-2'>Attachment</h3>
