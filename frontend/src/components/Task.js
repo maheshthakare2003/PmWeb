@@ -61,6 +61,7 @@ function Task() {
           items: destItems,
         },
       });
+     
       data = {
         ...columns,
         [source.droppableId]: {
@@ -72,6 +73,8 @@ function Task() {
           items: destItems,
         },
       };
+      updateTodo(destColumn.name, removed._id);
+      console.log("Data after drag:", data); // Debugging
     } else {
       const column = columns[source.droppableId];
       const copiedItems = [...column.items];
@@ -92,8 +95,22 @@ function Task() {
         },
       };
     }
+    // Assuming `data` is defined as shown
+for (const key in data) {
+  if (data.hasOwnProperty(key)) {
+      const nestedObject = data[key];
+      const { items } = nestedObject;
+      
+      if (Array.isArray(items)) {
+          items.forEach(item => {
+              updateTodo(data[key].name, item._id);
+          });
+      } else {
+          console.error(`Items for ${key} are not properly initialized or not an array.`);
+      }
+  }
+}
 
-    updateTodo(data);
   };
 
   const [isAddTaskModalOpen, setAddTaskModal] = useState(false);
@@ -161,10 +178,11 @@ function Task() {
     }
   }, [projectId, isAddTaskModalOpen, isRenderChange]);
 
-  const updateTodo = (data) => {
+  const updateTodo = (status, taskId) => {
     axios
-      .put(`http://localhost:9000/project/${projectId}/todo`, data)
-      .then((res) => {})
+      .patch(`http://localhost:5000/task/updateTaskStatus/${taskId}`, {status})
+      .then((res) => {console.log("Response Data ", res.data)})
+      
       .catch((error) => {
         toast.error("Something went wrong");
       });
