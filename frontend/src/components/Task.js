@@ -10,6 +10,7 @@ import ProjectDropdown from "./ProjectDropdown";
 import axios from "axios";
 import toast from "react-hot-toast";
 import TaskModal from "./TaskModal";
+import AppLayout2 from "./AppLayout2";
 
 function Task() {
   // const itemsFromBackend = [
@@ -143,7 +144,7 @@ for (const key in data) {
                 })),
             },
             [uuid()]: {
-              name: "To do",
+              name: "To Do",
               items: res.data.data.tasks
                 .filter((task) => task.status === "To Do")
                 .map((task) => ({
@@ -207,6 +208,7 @@ for (const key in data) {
   };
 
   return (
+    <AppLayout2>
     <div className="px-12 py-6 w-full">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl text-gray-800 flex justify-start items-center space-x-2.5">
@@ -318,6 +320,7 @@ for (const key in data) {
       />
       <TaskModal isOpen={isTaskOpen} setIsOpen={setTaskOpen} id={taskId} />
     </div>
+    </AppLayout2>
   );
 }
 
