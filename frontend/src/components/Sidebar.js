@@ -12,7 +12,33 @@ const Sidebar = ({ id }) => {
   useEffect(() => {});
 
   const handleLocation = (e) => {
-    setParamsWindow(new URL(e.currentTarget.href).pathname.slice(1));
+    // Prevent default behavior of the anchor tag
+    e.preventDefault();
+    
+    // Extract the pathname from the URL
+    const pathname = new URL(e.currentTarget.href).pathname;
+    console.log("Pathname   " + pathname);
+    // Split the pathname by '/'
+    const segments = pathname.split('/');
+    console.log("segments   " + segments);
+  
+    // Check if the length of the segments array is greater than or equal to 3
+    if (segments.length >= 3) {
+      // Remove the last two segments (prev)
+      const pop1 = segments.pop();
+      const pop2 = segments.pop();
+      // Add the first popped segment back into the segments array
+      segments.push(pop1);
+    }
+  
+    // Join the remaining segments back together
+    const newPath = segments.join('/');
+  
+    // Log the previous path before updating
+    console.log("Previous path: ", newPath);
+  
+    // Update window location to the new path
+    window.location.href = newPath;
   };
 
   const openModal = useCallback(() => {
@@ -47,7 +73,7 @@ const Sidebar = ({ id }) => {
     <div className="py-5">
       <div className="px-4 mb-3 flex items-center justify-between">
         <span className="">Projects</span>
-        <button
+        {/* <button
           onClick={openModal}
           className="bg-indigo-200 rounded-full p-[2px] focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-offset-1"
         >
@@ -63,7 +89,7 @@ const Sidebar = ({ id }) => {
               clipRule="evenodd"
             />
           </svg>
-        </button>
+        </button> */}
       </div>
       <ul className="border-r border-gray-300 pr-2">
         {projects.map((project, index) => (
