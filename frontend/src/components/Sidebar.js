@@ -1,44 +1,32 @@
 import React, { useCallback, useEffect, useState } from "react";
 import AddProjectModal from "./AddProjectModal";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import toast from 'react-hot-toast'
+
 const Sidebar = ({ id }) => {
   const [isModalOpen, setModalState] = useState(false);
   const [projects, setProjects] = useState([]);
   const [paramsWindow, setParamsWindow] = useState(
     window.location.pathname.slice(1)
   );
-  useEffect(() => {});
+  const navigate = useNavigate();
 
-  const handleLocation = (e) => {
-    // Prevent default behavior of the anchor tag
+  useEffect(() => {
+    ProjectData();
+    const handleProjectUpdate = ({ detail }) => {
+      ProjectData();
+    };
+    document.addEventListener("projectUpdate", handleProjectUpdate);
+    return () => {
+      document.removeEventListener("projectUpdate", handleProjectUpdate);
+    };
+  }, []);
+
+  const handleLocation = (e, projectId) => {
     e.preventDefault();
-    
-    // Extract the pathname from the URL
-    const pathname = new URL(e.currentTarget.href).pathname;
-    console.log("Pathname   " + pathname);
-    // Split the pathname by '/'
-    const segments = pathname.split('/');
-    console.log("segments   " + segments);
-  
-    // Check if the length of the segments array is greater than or equal to 3
-    if (segments.length >= 3) {
-      // Remove the last two segments (prev)
-      const pop1 = segments.pop();
-      const pop2 = segments.pop();
-      // Add the first popped segment back into the segments array
-      segments.push(pop1);
-    }
-  
-    // Join the remaining segments back together
-    const newPath = segments.join('/');
-  
-    // Log the previous path before updating
-    console.log("Previous path: ", newPath);
-  
-    // Update window location to the new path
-    window.location.href = newPath;
+    const pathname = `/Dash/${id}/${projectId}`;
+    navigate(pathname);
   };
 
   const openModal = useCallback(() => {
@@ -50,7 +38,6 @@ const Sidebar = ({ id }) => {
   }, []);
 
   const ProjectData = () => {
-    
     axios
       .get(`http://localhost:5000/employee/getProjects/${id}`)
       .then((res) => {
@@ -59,20 +46,10 @@ const Sidebar = ({ id }) => {
       });
   };
 
-  useEffect(() => {
-    ProjectData();
-    document.addEventListener("projectUpdate", ({ detail }) => {
-      ProjectData();
-    });
-    return () => {
-      document.removeEventListener("projectUpdate", {}, false);
-    };
-  }, []);
-
   return (
     <div className="py-5">
       <div className="px-4 mb-3 flex items-center justify-between">
-        <span className="">Projects</span>
+        <span>Projects</span>
         {/* <button
           onClick={openModal}
           className="bg-indigo-200 rounded-full p-[2px] focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-offset-1"
@@ -95,8 +72,8 @@ const Sidebar = ({ id }) => {
         {projects.map((project, index) => (
           <Link
             key={index}
-            to={project._id}
-            onClick={(e) => handleLocation(e)}
+            to={`/Dash/${id}/${project._id}`}
+            onClick={(e) => handleLocation(e, project._id)}
           >
             <li
               className={`px-5 py-1.5 mb-1 text-gray-600 font text-sm capitalize select-none hover:text-indigo-600 rounded transition-colors hover:bg-indigo-200/80 ${
