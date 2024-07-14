@@ -66,6 +66,7 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
                                         </svg>
                                     </button>
                                 </Dialog.Title>
+                                
                                 <div className='flex gap-4 h-[inherit]'>
                                     <div className="!w-8/12 px-8 space-y-3 py-4 min-h-max  overflow-y-auto">
                                         <h1 className='text-3xl font-semibold '>{capitalizeFirstLetter(taskData.title)}</h1>
@@ -73,6 +74,7 @@ const TaskModal = ({ isOpen, setIsOpen, id }) => {
                                         <p className='text-gray-600'>
     {taskData.description !== null ? capitalizeFirstLetter(taskData.description) : "null"}
 </p>
+
 
                                         {/* <p className='text-gray-600'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores modi error, voluptatibus ullam odio nemo culpa optio incidunt, soluta sunt eos laboriosam labore animi dolorum voluptas officiis fugit perspiciatis laborum.</p> */}
                                         {/* <div>
