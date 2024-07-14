@@ -66,6 +66,8 @@ const Sidebar = ({ id }) => {
               clipRule="evenodd"
             />
           </svg>
+
+          //
         </button> */}
       </div>
       <ul className="border-r border-gray-300 pr-2">
