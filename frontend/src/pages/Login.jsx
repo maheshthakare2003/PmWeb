@@ -45,7 +45,7 @@ const handleLogin = async () => {
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/register', {
+      const response = await axios.post('http://localhost:5000/employee/register', {
         name,
         email,
         password
