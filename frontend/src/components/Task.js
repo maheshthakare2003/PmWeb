@@ -76,7 +76,7 @@ function Task() {
       });
   };
 
-  const updateTaskStatus = (taskId, status) => {
+  const updateTodo = (taskId, status) => {
     axios
       .patch(`http://localhost:5000/task/updateTaskStatus/${taskId}`, {
         status,
@@ -126,31 +126,54 @@ function Task() {
   };
 
   const onDragEnd = (result, columns, setColumns) => {
+    console.log('onDragEnd result:', result);
     if (!result.destination) return;
+  
     const { source, destination } = result;
     const sourceColumn = columns[source.droppableId];
-
+    const destColumn = columns[destination.droppableId];
+    
+    // Prevent dragging from "Done" to other columns
     if (sourceColumn.name === 'Done' && destination.droppableId !== source.droppableId) {
       return;
     }
-
-    const copiedColumns = { ...columns };
-    const sourceItems = [...copiedColumns[source.droppableId].items];
-    const destItems = [...copiedColumns[destination.droppableId].items];
+  
+    // Move the task
+    const sourceItems = Array.from(sourceColumn.items);
     const [removed] = sourceItems.splice(source.index, 1);
+    const destItems = Array.from(destColumn.items);
     destItems.splice(destination.index, 0, removed);
-
-    copiedColumns[source.droppableId] = {
-      ...copiedColumns[source.droppableId],
-      items: sourceItems,
-    };
-    copiedColumns[destination.droppableId] = {
-      ...copiedColumns[destination.droppableId],
-      items: destItems,
-    };
-
-    setColumns(copiedColumns);
-    updateTaskStatus(removed._id, destination.droppableId.toLowerCase());
+  
+    // Update state
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...sourceColumn,
+        items: sourceItems,
+      },
+      [destination.droppableId]: {
+        ...destColumn,
+        items: destItems,
+      },
+    });
+  
+    // Update task status on the backend
+    console.log('Updating task status:', removed._id, destColumn.name);
+    updateTaskStatus(removed._id, destColumn.name);
+  };
+  
+  const updateTaskStatus = (taskId, status) => {
+    console.log('Updating task status on backend:', taskId, status);
+    axios
+      .patch(`http://localhost:5000/task/updateTaskStatus/${taskId}`, { status })
+      .then((res) => {
+        console.log('Task status updated, fetching tasks...');
+        fetchTasks();
+      })
+      .catch((error) => {
+        console.error('Error updating task status:', error);
+        toast.error('Something went wrong');
+      });
   };
 
   return (
